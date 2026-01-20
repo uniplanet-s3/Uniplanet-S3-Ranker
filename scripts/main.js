@@ -37,16 +37,20 @@ function getRanking() {
     console.log(rankingIds);
     // use the retrieved rankingIds to populate ranking
     for (let i = 0; i < rankingIds.length; i++) {
-      traineeId = rankingIds[i];
-      if (traineeId < 0) {
-        ranking[i] = newTrainee();
-      } else {
-        let trainee = findTraineeById(rankingIds[i])
-        // let trainee = trainees[rankingIds[i]];
-        trainee.selected = true;
-        ranking[i] = trainee;
-      }
+  let traineeId = rankingIds[i];
+  
+  if (traineeId <= 0) { // 0 or negative = blank spot
+    ranking[i] = newTrainee();
+  } else {
+    let trainee = findTraineeById(traineeId);
+    if (trainee) { // only mark as selected if trainee exists
+      trainee.selected = true;
+      ranking[i] = trainee;
+    } else {
+      ranking[i] = newTrainee(); // fallback if ID not found
     }
+  }
+}
     // refresh table to show checkboxes
     rerenderTable();
     // refresh ranking to show newly inserted trainees
